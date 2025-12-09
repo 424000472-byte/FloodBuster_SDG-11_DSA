@@ -198,7 +198,7 @@ evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
                 EvacCenter &e = evacCenters[idx];
 
                 if (dist == INT_MAX) {
-                    cout << e.name << ": NO SAFE PATH\n";
+                    cout << e.name << "| Not reachable from your barangay.\n";
                     continue;
                 }
 
