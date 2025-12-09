@@ -157,7 +157,7 @@ evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
 
             if (nameToNode.find(area) != nameToNode.end()) {
                 g.markFlooded(nameToNode[area]);
-                alertQueue.push(area + " is FLOODED.");
+                alertQueue.push(area + " is FLOODED. Please stay safe and evacuate immediately if necessary.");
             } else {
                 cout << "Invalid area name.\n";
             }
@@ -203,18 +203,22 @@ evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
                 }
 
                 cout << e.name 
-                     << " | Distance: " << dist
+                     << " | Distance: " << dist << "Meter"
                      << " | Family Size: " << e.currentPeople 
                      << "/" << e.capacity;
 
-                if (e.currentPeople < e.capacity) {
-                    cout << "  <-- Recommended!\n";
-                    e.currentPeople++;
-                    recommended = true;
-                    break;
-                } else {
-                    cout << "  (FULL)\n";
-                }
+                  if (!recommended && e.currentPeople < e.capacity) {
+        cout << "  <-- Recommended!\n";
+        e.currentPeople++;
+        recommended = true;
+    } 
+    else if (e.currentPeople >= e.capacity) {
+        cout << "  (FULL)\n";
+    }
+    else {
+        cout << "\n"; 
+    }
+
             }
 
             if (!recommended) {
