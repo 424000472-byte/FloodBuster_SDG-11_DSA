@@ -1,50 +1,50 @@
-Barangay ABCD1
-Barangay ABCD2
-Barangay ABCD3
-Barangay ABCD4
-Barangay ABCD5
-Barangay ABCD6
-Barangay ABCD7
-Barangay ABCD8
-Barangay ABCD9
-Barangay ABCD10
-Barangay ABCD11
-Barangay ABCD12
-Barangay ABCD13
-Barangay ABCD14
-Barangay ABCD15
-Barangay ABCD16
-Barangay ABCD17
-Barangay ABCD18
-Barangay ABCD19
-Barangay ABCD20
-Barangay ABCD21
-Barangay ABCD22
-Barangay ABCD23
-Barangay ABCD24
-Barangay ABCD25
-Barangay ABCD26
-Barangay ABCD27
-Barangay ABCD28
-Barangay ABCD29
-Barangay ABCD30
-Barangay ABCD31
-Barangay ABCD32
-Barangay ABCD33
-Barangay ABCD34
-Barangay ABCD35
-Barangay ABCD36
-Barangay ABCD37
-Barangay ABCD38
-Barangay ABCD39
-Barangay ABCD40
-Barangay ABCD41
-Barangay ABCD42
-Barangay ABCD43
-Barangay ABCD44
-Barangay ABCD45
-Barangay ABCD46
-Barangay ABCD47
-Barangay ABCD48
-Barangay ABCD49
-Barangay ABCD50
+BarangayA
+BarangayB
+BarangayC
+BarangayD
+BarangayE
+BarangayF
+BarangayG
+BarangayH
+BarangayI
+BarangayJ
+BarangayK
+BarangayL
+BarangayM
+BarangayN
+BarangayO
+BarangayP
+BarangayQ
+BarangayR
+BarangayS
+BarangayT
+BarangayU
+BarangayV
+BarangayW
+BarangayX
+BarangayY
+BarangayZ
+BarangayAA
+BarangayAB
+BarangayAC
+BarangayAD
+BarangayAE
+BarangayAF
+BarangayAG
+BarangayAH
+BarangayAI
+BarangayAJ
+BarangayAK
+BarangayAL
+BarangayAM
+BarangayAN
+BarangayAO
+BarangayAP
+BarangayAQ
+BarangayAR
+BarangayAS
+BarangayAT
+BarangayAU
+BarangayAV
+BarangayAW
+BarangayAX
