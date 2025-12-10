@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <algorithm>
+#include <fstream>
 
 using namespace std;
 
@@ -38,7 +39,7 @@ public:
     void displayFloodStatus(const vector<string>& names) {
         cout << "\n--- FLOOD STATUS ---\n";
         for (int i = 0; i < V; i++) {
-            cout << names[i] << ": " 
+            cout << names[i] << ": "
                  << (flooded[i] ? "FLOODED" : "SAFE") << endl;
         }
     }
@@ -98,41 +99,59 @@ int readInt(const string &prompt) {
     }
 }
 
+void loadBarangays(vector<string> &names, unordered_map<string,int> &nameToNode, const string &filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Error: Could not open " << filename << endl;
+        return;
+    }
+
+    string barangay;
+    int index = 0;
+    while (getline(file, barangay)) {
+        if (!barangay.empty()) {
+            names.push_back(barangay);
+            nameToNode[barangay] = index++;
+        }
+    }
+    file.close();
+}
+
+
 int main() {
 
-   vector<string> names = {
-   "Barangay A","Barangay B","Barangay C","Barangay D","Barangay E","Barangay F",
-    "Barangay G","Barangay H","Barangay I","Barangay J","Barangay K","Barangay L",
-    "Barangay M","Barangay N","Barangay O","Barangay P","Barangay Q","Barangay R",
-    "Barangay S","Barangay T","Barangay U","Barangay V","Barangay W","Barangay X",
-    "Barangay Y","Barangay Z","Barangay AA","Barangay AB","Barangay AC","Barangay AD","Barangay AE",
-    "Barangay AF","Barangay AG","Barangay AH","Barangay AI","Barangay AJ",
-    "Barangay AK","Barangay AL","Barangay AM","Barangay AN","Barangay AO",
-    "Barangay AP","Barangay AQ","Barangay AR","Barangay AS","Barangay AT",
-    "Barangay AU","Barangay AV","Barangay AW","Barangay AX","Barangay AY",
-    "Barangay AZ"
-};
+    vector<string> names;
+    unordered_map<string,int> nameToNode;
+    loadBarangays(names, nameToNode, "barangay.txt");
 
-unordered_map<string, int> nameToNode;
-for (int i = 0; i < names.size(); i++) {
-    nameToNode[names[i]] = i;
-}
+    Graph g(names.size());
 
-
-Graph g(names.size());
-
-
-for (int i = 0; i < names.size() - 1; i++) {
-    g.addEdge(i, i + 1, 3); 
-}
+    for (int i = 0; i < names.size() - 1; i++) {
+        g.addEdge(i, i + 1, 3);
+    }
 
     vector<EvacCenter> evacCenters;
-        evacCenters.push_back({12, 5, 0, "Evacuation Center 1 (Barangay M)"});
-evacCenters.push_back({25, 5, 0, "Evacuation Center 2 (Barangay Z)"});
-evacCenters.push_back({31, 5, 0, "Evacuation Center 3 (Barangay AF)"});
 
-evacCenters.push_back({5, 4, 0, "Evacuation Center 4 (Barangay F)"});
-evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
+    EvacCenter e1;
+    e1.node = 3;
+    e1.capacity = 2;
+    e1.currentPeople = 0;
+    e1.name = "Evacuation Center 1 (Barangay D)";
+    evacCenters.push_back(e1);
+
+    EvacCenter e2;
+    e2.node = 5;
+    e2.capacity = 3;
+    e2.currentPeople = 0;
+    e2.name = "Evacuation Center 2 (Barangay F)";
+    evacCenters.push_back(e2);
+
+    EvacCenter e3;
+    e3.node = 7;
+    e3.capacity = 4;
+    e3.currentPeople = 0;
+    e3.name = "Evacuate Center 3 (Barangay H)";
+    evacCenters.push_back(e3);
 
     queue<string> alertQueue;
 
@@ -142,7 +161,7 @@ evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
         cout << "\n===== FLOOD MONITORING SYSTEM =====\n";
         cout << "1. Mark flooded area\n";
         cout << "2. View flood status\n";
-        cout << "3. Evacuation recommendation\n";
+        cout << "3. Evacuation Path recommendation\n";
         cout << "4. View emergency alerts\n";
         cout << "5. Clear alerts\n";
         cout << "6. Reset flood status\n";
@@ -154,10 +173,11 @@ evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
             string area;
             cout << "Enter area that is flooded: ";
             getline(cin, area);
+            cout<<"!!This "<< area <<" is FLOODED!!";
 
             if (nameToNode.find(area) != nameToNode.end()) {
                 g.markFlooded(nameToNode[area]);
-                alertQueue.push(area + " is FLOODED.");
+                alertQueue.push(area + " is FLOODED. Please stay safe and evacuate immediately if necessary.");
             } else {
                 cout << "Invalid area name.\n";
             }
@@ -179,7 +199,7 @@ evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
 
             int userNode = nameToNode[userArea];
 
-            vector< pair<int,int> > ranked; 
+            vector< pair<int,int> > ranked;
             for (int i = 0; i < evacCenters.size(); i++) {
                 int d = g.shortestDistance(userNode, evacCenters[i].node);
                 ranked.push_back(make_pair(d, i));
@@ -198,28 +218,31 @@ evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
                 EvacCenter &e = evacCenters[idx];
 
                 if (dist == INT_MAX) {
-                    cout << e.name << "| Not reachable from your barangay.\n";
+                    cout << e.name << ": NO SAFE PATH\n";
                     continue;
                 }
 
-                cout << e.name 
-                     << " | Distance: " << dist
-                     << " | Family Size: " << e.currentPeople 
+                cout << e.name
+                     << " | Distance: " << dist << "M"
+                     << " | Family Size: " << e.currentPeople
                      << "/" << e.capacity;
 
-                if (e.currentPeople < e.capacity) {
-                    cout << "  <-- Recommended!\n";
-                    e.currentPeople++;
-                    recommended = true;
-                    break;
-                } else {
-                    cout << "  (FULL)\n";
-                }
-            }
+                 if (!recommended && e.currentPeople < e.capacity) {
+        cout << "  <-- Recommended!\n";
+        e.currentPeople++;
+        recommended = true;
+    }
+    else if (e.currentPeople >= e.capacity) {
+        cout << "  (FULL)\n";
+    }
+    else {
+        cout << "\n";
+    }
+}
 
-            if (!recommended) {
-                cout << "\n⚠ ALL evacuation centers are FULL.\n";
-            }
+if (!recommended) {
+    cout << "\n⚠ ALL evacuation centers are FULL.\n";
+}
         }
 
         else if (choice == 4) {
@@ -229,7 +252,7 @@ evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
             } else {
                 queue<string> temp = alertQueue;
                 while (!temp.empty()) {
-                    cout << "⚠ " << temp.front() << endl;
+                    cout << "!!! " << temp.front() << endl;
                     temp.pop();
                 }
             }
@@ -256,5 +279,4 @@ evacCenters.push_back({46, 4, 0, "Evacuation Center 5 (Barangay AT)"});
 
     return 0;
 }
-
 
