@@ -1,1 +1,18 @@
+void loadBarangays(vector<string> &names, unordered_map<string,int> &nameToNode, const string &filename) {
+    ifstream file(filename); // Open file
+    if (!file.is_open()) {
+        cout << "Error: Could not open " << filename << endl;
+        return;
+    }
+
+    string barangay;
+    int index = 0;
+    while (getline(file, barangay)) { // Read each line
+        if (!barangay.empty()) {
+            names.push_back(barangay);       // Store barangay name
+            nameToNode[barangay] = index++; // Map name -> index
+        }
+    }
+    file.close(); // Close file
+}
 
