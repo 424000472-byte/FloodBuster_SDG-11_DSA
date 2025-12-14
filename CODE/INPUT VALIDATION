@@ -1,0 +1,16 @@
+int readInt(const string &prompt) {
+    int value;
+    while (true) {
+        cout << prompt;   // Show prompt
+        cin >> value;     // Read input
+
+        if (cin.fail()) { // If input is invalid (not a number)
+            cin.clear();  // Clear error flag
+            cin.ignore(99999, '\n'); // Ignore invalid input
+            cout << "Invalid input. Enter a number.\n";
+        } else {
+            cin.ignore(99999, '\n'); // Clear buffer
+            return value;            // Return valid integer
+        }
+    }
+}
