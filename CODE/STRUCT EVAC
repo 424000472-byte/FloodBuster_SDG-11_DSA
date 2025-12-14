@@ -1,1 +1,7 @@
+struct EvacCenter {
+    int node;          // Location of center in graph
+    int capacity;      // Maximum people it can hold
+    int currentPeople; // Current occupancy
+    string name;       // Name of evacuation center
+};
 
